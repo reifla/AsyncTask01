@@ -24,7 +24,7 @@ public class FeedEntry {
         return artist;
     }
 
-     void setArtist(String artist) {
+    void setArtist(String artist) {
         this.artist = artist;
     }
 
@@ -32,7 +32,7 @@ public class FeedEntry {
         return releaseDate;
     }
 
-     void setReleaseDate(String releaseDate) {
+    void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -40,21 +40,21 @@ public class FeedEntry {
         return summary;
     }
 
-     void setSummary(String summary) {
+    void setSummary(String summary) {
         this.summary = summary;
     }
 
-     String getImageURL() {
+    String getImageURL() {
         return imageURL;
     }
 
-     void setImageURL(String imageURL) {
+    void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
 
     @Override
     public String toString() {
-        return  "name= " + name + '\n' +
+        return "name= " + name + '\n' +
                 "artist= " + artist + '\n' +
                 "releaseDate= " + releaseDate + '\n' +
                 "imageURL= " + imageURL + '\n';

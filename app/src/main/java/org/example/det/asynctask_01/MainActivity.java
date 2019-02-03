@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,11 +16,14 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private ListView listApps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        listApps = findViewById(R.id.xmlListView);
+
         Log.d(TAG, "onCreate: starting Asynctask.");
         DownloadData downloadData = new DownloadData();
         downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/" +
@@ -27,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: done.");
     }
 
-    private static class DownloadData extends AsyncTask<String, Void, String> {
+    private class DownloadData extends AsyncTask<String, Void, String> {
         private static final String TAG = "DownloadData";
 
         @Override
@@ -46,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onPostExecute: parameter is: " + s);
             ParseApplications parseApplications = new ParseApplications();
             parseApplications.parse(s);
+
+            ArrayAdapter<FeedEntry> arrayAdapter = new ArrayAdapter<FeedEntry>(
+                    MainActivity.this,R.layout.list_item,parseApplications.getApplications());
+            listApps.setAdapter(arrayAdapter);
         }
 
         private String downloadXml(String urlPath) {
@@ -66,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
                 int charsRead;                          //Anz der gelesenen Chars
                 char[] inputBuffer = new char[500];     //Buffer für die gelesenen Zeichen
-                while(true) {
+                while (true) {
                     charsRead = reader.read(inputBuffer);   //Reader liest in inputBuffer
-                    if(charsRead < 0) {
+                    if (charsRead < 0) {
                         break;                          //Wenn kleiner 0, dann sind wir am Ende
                     }
-                    if(charsRead > 0) {
+                    if (charsRead > 0) {
                         xmlResult.append(String.copyValueOf(inputBuffer, 0, charsRead));
                     }
                 }
